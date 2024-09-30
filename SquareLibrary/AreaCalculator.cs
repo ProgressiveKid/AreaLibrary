@@ -2,7 +2,7 @@
 namespace AreaLibrary
 {
 	/// <summary>
-	/// Класс, который вычисляет площадь геометрических фигур.
+	/// Класс, который вычисляет площадь геометрических фигур
 	/// </summary>
 	public class AreaCalculator
 	{
@@ -10,7 +10,7 @@ namespace AreaLibrary
 		/// Вычисляет площадь заданной фигуры
 		/// </summary>
 		/// <param name="figure">Фигура, для которой необходимо рассчитать площадь</param>
-		/// <returns>Площадь фигуры в виде цифры с плавающей запятой</returns>
+		/// <returns>Площадь фигуры в виде цифры с плавающей запятой в см^2 </returns>
 		/// <exception cref="ArgumentNullException">Выбрасывается, если форма имеет значение null.</exception>
 		public static double GetArea(IFigure figure)
 		{

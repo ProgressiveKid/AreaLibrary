@@ -1,56 +1,79 @@
-using System;
-using Xunit;
-using AreaLibrary;  // Не забудьте заменить на ваш актуальный namespace
 
-public class TriangleTests
+namespace UnitTestsForAreaLibrary
 {
-	[Fact]
-	public void CalculateArea_ValidTriangle_ReturnsCorrectArea()
+	public class TriangleTests
 	{
-		// Arrange
-		var triangle = new Triangle(3, 4, 5);
+		[Theory]
+		[InlineData(3, 4, 5, 6)]
+		[InlineData(5, 12, 13, 30)]
+		[InlineData(7, 24, 25, 84)]
+		public void CalculateTriangleArea_ReturnsCorrectArea(double side1, double side2, double side3, double expectedArea)
+		{
+			// Arrange
+			var triangle = new Triangle(side1, side2, side3);
 
-		// Act
-		double area = triangle.CalculateArea();
+			// Act
+			double area = AreaCalculator.GetArea(triangle);
 
-		// Assert
-		Assert.Equal(6, area, 1); // Ожидаемое значение площади 6 (с точностью 1)
+			// Assert
+			Assert.Equal(expectedArea, area);
+		}
+
+		[Theory]
+		[InlineData(3, 4, 5)]
+		[InlineData(5, 12, 13)]
+		[InlineData(7, 24, 25)]
+		public void IsRectangularTriangle_ReturnsTrue(double side1, double side2, double side3)
+		{
+			// Arrange
+			var triangle = new Triangle(side1, side2, side3);
+
+			// Act
+			bool isReactangular = triangle.IsRectangular();
+
+			// Assert
+			Assert.True(isReactangular);
+		}
+
+		[Theory]
+		[InlineData(3, 4, 6)]
+		[InlineData(5, 12, 14)]
+		[InlineData(7, 24, 26)]
+		public void IsRectangularTriangle_ReturnsFalse(double side1, double side2, double side3)
+		{
+			// Arrange
+			var triangle = new Triangle(side1, side2, side3);
+
+			// Act
+			bool isReactangular = triangle.IsRectangular();
+
+			// Assert
+			Assert.False(isReactangular);
+		}
+
+
+		[Fact]
+		public void ConstructorTriangle_WithNegativeSide_ThrowsArgumentOutOfRangeException()
+		{
+			// Act & Assert
+			var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new Triangle(-3, 4, 5));
+			Assert.IsType<ArgumentOutOfRangeException>(exception);
+		}
+		[Fact]
+		public void ConstructorTriangle_WithZeroSide_ThrowsArgumentOutOfRangeException()
+		{
+			// Act & Assert
+			var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new Triangle(0, 4, 5));
+			Assert.IsType<ArgumentOutOfRangeException>(exception);
+		}
+		[Fact]
+		public void ConstructorTriangle_WithInvalidSides_ThrowsArgumentException()
+		{
+			// Act & Assert
+			var exception = Assert.Throws<ArgumentException>(() => new Triangle(1, 2, 3));
+			Assert.IsType<ArgumentException>(exception);
+		}
+
 	}
 
-	[Fact]
-	public void IsValid_ValidTriangle_ReturnsTrue()
-	{
-		// Arrange
-		var triangle = new Triangle(3, 4, 5);
-
-		// Act
-		bool isValid = triangle.IsValid();
-
-		// Assert
-		Assert.True(isValid);
-	}
-
-	[Fact]
-	public void IsValid_InvalidTriangle_ReturnsFalse()
-	{
-		// Arrange
-		var triangle = new Triangle(1, 2, 3);
-
-		// Act
-		bool isValid = triangle.IsValid();
-
-		// Assert
-		Assert.False(isValid);
-	}
-
-	[Fact]
-	public void CalculateArea_InvalidTriangle_ThrowsInvalidOperationException()
-	{
-		// Arrange
-		var triangle = new Triangle(1, 2, 3);
-
-		// Act & Assert
-		var exception = Assert.Throws<InvalidOperationException>(() => triangle.CalculateArea());
-		Assert.Equal("Треугольник с такими сторонами не существует", exception.Message);
-	}
 }

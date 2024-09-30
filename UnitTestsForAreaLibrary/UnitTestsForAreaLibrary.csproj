@@ -22,9 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="AreaLibrary">
-      <HintPath>..\SquareLibrary\bin\Debug\net6.0\AreaLibrary.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\SquareLibrary\AreaLibrary.csproj" />
   </ItemGroup>
 
 </Project>
