@@ -1,0 +1,52 @@
+--Создание таблицы Product
+CREATE TABLE Products (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Name NVARCHAR(255) NOT NULL
+);
+	
+--Создание таблицы Category
+CREATE TABLE Category (
+    ID INT PRIMARY KEY IDENTITY(1,1), 
+    CategoryName NVARCHAR(255) NOT NULL 
+);	
+
+--Для реализации связи многие ко многим необходимо создать ещё одну таблицу
+CREATE TABLE ProductCategory (
+	ProductId INT FOREIGN KEY REFERENCES Products(Id),
+	CategoryId INT FOREIGN KEY REFERENCES Category(Id),
+	PRIMARY KEY (ProductId, CategoryId)
+);	
+
+--Вставка данных в Products
+INSERT INTO Products
+VALUES
+	('T-shirt'),
+	('Jeans'),
+	('Shoes'),
+	('Backpack'),
+	('Hat');
+	
+--Вставка данных в Category
+INSERT INTO Category
+VALUES
+	('Clothes'),
+	('Accessories'),
+	('Underwear'),
+	('Boots');
+	
+--Добавление данных в промежуточную таблицу 	
+INSERT INTO ProductCategory
+VALUES
+	(1, 1),
+	(2, 1),
+	(3, 3),
+	(5, 2);	
+
+--Запрос на получение всех пар "Имя продукта – Имя категории"
+--Если у продукта нет категорий, то его имя все равно выводится
+SELECT Products.Name, Category.CategoryName
+FROM Products
+LEFT JOIN ProductCategory 
+	ON Products.Id = ProductCategory.ProductId
+LEFT JOIN Category 
+	ON ProductCategory.CategoryId = Category.Id;
